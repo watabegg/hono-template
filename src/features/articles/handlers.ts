@@ -10,7 +10,6 @@ import {
 	unauthorized,
 } from '@/lib/http/responses'
 import { requireSessionUser } from '@/lib/auth'
-import type { Article } from "./types";
 import * as service from './service'
 import type * as route from './openapi'
 

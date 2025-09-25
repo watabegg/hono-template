@@ -22,7 +22,6 @@ app.get('/', async (c) => {
 	return c.json({ message: 'Hello Hono!', user: user ?? null }, { status: 200 })
 })
 
-// mount feature routes
 app.route('/articles', articleRoutes)
 
 registerApiDocs(app)
