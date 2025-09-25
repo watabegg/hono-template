@@ -1,7 +1,7 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
 import type {
 	RouteConfig,
-	RouteHandler as ZodRouteHandler,
+	RouteHandler,
 } from '@hono/zod-openapi'
 import { swaggerUI } from '@hono/swagger-ui'
 import type Env from '@/config/env'
@@ -89,7 +89,7 @@ export const createAuthenticatedRoute = <const R extends RouteConfigType>(
 		},
 	} satisfies RouteConfigType)
 
-export type AppRouteHandler<R extends RouteConfig> = ZodRouteHandler<R, AppEnv>
+export type AppRouteHandler<R extends RouteConfig> = RouteHandler<R, AppEnv>
 
 export const defineRouteHandler = <R extends RouteConfig>(
 	handler: AppRouteHandler<R>,
