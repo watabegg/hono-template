@@ -4,6 +4,7 @@
 Hono+Zod+OpenAPI(drizzle,Auth.js)の開発をするなかでこの構築の自分の中の完成にたどり着いたのでそのメモ
 
 ## ディレクトリ構造
+```
 src
 ├── config // 設定ファイル
 ├── db // dbとりまとめ
@@ -23,9 +24,10 @@ src
 │   ├── auth // Auth.jsの設定とヘルパー関数とりまとめ
 │   ├── http // レスポンスユーティリティとりまとめ
 │   ├── openapi 
-│   │   ├── index.ts // OpenAPIのせっていとりまとめ
+│   │   ├── index.ts // OpenAPIの設定とりまとめ
 │   │   └── tags.ts
 │   └── types.ts
 └── middleware
     ├── auth.ts // 認証Middleware
     └── db.ts // HonoのContextにdb注入するようmiddleware
+```
