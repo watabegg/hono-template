@@ -1,18 +1,10 @@
-import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
-import type {
-	RouteConfig,
-	RouteHandler,
-} from '@hono/zod-openapi'
+import { OpenAPIHono, z, type RouteConfig, RouteHandler } from '@hono/zod-openapi'
 import { swaggerUI } from '@hono/swagger-ui'
 import type Env from '@/config/env'
 import { HTTP_STATUS, HTTP_STATUS_MESSAGE } from '@/lib/http/status'
 import { listRegisteredTags, registerFeatureTag } from '@/lib/openapi/tags'
 
-type AppBindings = Env['Bindings']
-type AppVariables = Env['Variables']
-
-export type AppEnv = { Bindings: AppBindings; Variables: AppVariables }
-export type AppOpenAPI = OpenAPIHono<AppEnv>
+export type AppOpenAPI = OpenAPIHono<Env>
 
 type CreateAppOptions = {
 	tags?: { name: string; description?: string }[]
@@ -20,7 +12,7 @@ type CreateAppOptions = {
 
 // newApp: OpenAPI対応のHonoアプリを生成
 export const newApp = (options: CreateAppOptions = {}): AppOpenAPI => {
-	const app = new OpenAPIHono<AppEnv>()
+	const app = new OpenAPIHono<Env>()
 
 	options.tags?.forEach(registerFeatureTag)
 
@@ -73,24 +65,4 @@ export const DEFAULT_UNAUTHORIZED_RESPONSE = {
 	},
 } as const
 
-type RouteConfigType = Parameters<typeof createRoute>[0]
-
-export const createAuthenticatedRoute = <const R extends RouteConfigType>(
-	config: R,
-) =>
-	createRoute({
-		...config,
-		security: config.security,
-		responses: {
-			...config.responses,
-			[HTTP_STATUS.UNAUTHORIZED]:
-				config.responses?.[HTTP_STATUS.UNAUTHORIZED] ??
-				DEFAULT_UNAUTHORIZED_RESPONSE,
-		},
-	} satisfies RouteConfigType)
-
-export type AppRouteHandler<R extends RouteConfig> = RouteHandler<R, AppEnv>
-
-export const defineRouteHandler = <R extends RouteConfig>(
-	handler: AppRouteHandler<R>,
-) => handler
+export const handler = <R extends RouteConfig>( h: RouteHandler<R, Env> ) => h

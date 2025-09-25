@@ -1,5 +1,5 @@
 import type { DbClient } from "@/db";
-import { defineRouteHandler } from '@/lib/openapi'
+import { handler } from '@/lib/openapi'
 import {
 	created,
 	forbidden,
@@ -13,14 +13,14 @@ import { requireSessionUser } from '@/lib/auth'
 import * as service from './service'
 import type * as route from './openapi'
 
-export const listArticles = defineRouteHandler<
+export const listArticles = handler<
   typeof route.listArticles
 >(async (c) => {
   const articles = await service.listArticles(c.var.db)
   return ok(c, articles)
 })
 
-export const getArticleById = defineRouteHandler<
+export const getArticleById = handler<
   typeof route.getArticleById
 >(async (c) => {
   const { articleId } = c.req.valid('param')
@@ -29,7 +29,7 @@ export const getArticleById = defineRouteHandler<
   return ok(c, article)
 })
 
-export const createArticle = defineRouteHandler<
+export const createArticle = handler<
   typeof route.createArticle
 >(async (c) => {
   const body = c.req.valid('json')
@@ -48,7 +48,7 @@ export const createArticle = defineRouteHandler<
   }
 })
 
-export const updateArticle = defineRouteHandler<
+export const updateArticle = handler<
   typeof route.updateArticleById
 >(async (c) => {
   const { articleId } = c.req.valid('param')
@@ -72,7 +72,7 @@ export const updateArticle = defineRouteHandler<
   }
 })
 
-export const deleteArticle = defineRouteHandler<
+export const deleteArticle = handler<
   typeof route.deleteArticleById
 >(async (c) => {
   const { articleId } = c.req.valid('param')
