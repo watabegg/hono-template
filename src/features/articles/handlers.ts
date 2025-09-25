@@ -1,13 +1,10 @@
-import type { DbClient } from "@/db";
 import { handler } from '@/lib/openapi'
 import {
 	created,
 	forbidden,
-	internalError,
 	noContent,
 	notFound,
 	ok,
-	unauthorized,
 } from '@/lib/http/responses'
 import { requireSessionUser } from '@/lib/auth'
 import * as service from './service'
@@ -40,12 +37,9 @@ export const createArticle = handler<
     return forbidden(c, 'Forbidden')
   }
   const id = crypto.randomUUID()
-  try {
-    await service.createArticle(c.var.db, id, body.title, body.content, sessionUser.user.id)
-    return created(c, null)
-  } catch (error) {
-    return internalError(c, error instanceof Error ? error.message : 'Failed to create article')
-  }
+  await service.createArticle(c.var.db, id, body.title, body.content, sessionUser.user.id)
+  return created(c, null)
+
 })
 
 export const updateArticle = handler<
@@ -64,12 +58,9 @@ export const updateArticle = handler<
   if (article.userId !== sessionUser.user.id) {
     return forbidden(c, 'Forbidden')
   }
-  try {
-    await service.updateArticle(c.var.db, articleId, body.title!, body.content!)
-    return noContent(c)
-  } catch (error) {
-    return internalError(c, error instanceof Error ? error.message : 'Failed to update article')
-  }
+  await service.updateArticle(c.var.db, articleId, body.title!, body.content!)
+  return noContent(c)
+
 })
 
 export const deleteArticle = handler<
@@ -87,10 +78,6 @@ export const deleteArticle = handler<
   if (article.userId !== sessionUser.user.id) {
     return forbidden(c, 'Forbidden')
   }
-  try {
-    await service.deleteArticle(c.var.db, articleId)
-    return noContent(c)
-  } catch (error) {
-    return internalError(c, error instanceof Error ? error.message : 'Failed to delete article')
-  }
+  await service.deleteArticle(c.var.db, articleId)
+  return noContent(c)
 })

@@ -1,21 +1,8 @@
-import { initAuthConfig } from '@hono/auth-js'
 import { newApp, registerApiDocs } from '@/lib/openapi'
-import { authSessionMiddleware } from '@/middleware/auth'
-import { dbMiddleware } from '@/middleware/db'
+import { setupMiddleware } from '@/middleware/factory'
 import articleRoutes from '@/features/articles/routes'
-import { createAuthConfig } from '@/lib/auth/config'
-import { getDbClient } from '@/db'
 
-const app = newApp()
-
-app.use('*', dbMiddleware())
-
-app.use(
-	'*',
-	initAuthConfig((c) => createAuthConfig(getDbClient(c.env), c.env)),
-)
-
-app.use('*', authSessionMiddleware())
+const app = setupMiddleware(newApp())
 
 app.get('/', async (c) => {
 	const user = c.get('authUser')
