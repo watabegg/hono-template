@@ -1,0 +1,9 @@
+name = "backend-sample"
+main = "src/index.ts"
+compatibility_date = "2025-08-21"
+
+[vars]
+APP_ENV = "development"
+
+[env.production.vars]
+APP_ENV = "production"

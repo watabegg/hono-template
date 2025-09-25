@@ -1,0 +1,36 @@
+{
+	"name": "backend",
+	"type": "module",
+	"scripts": {
+		"dev": "wrangler dev",
+		"deploy": "wrangler deploy --minify",
+		"build": "wrangler build",
+		"cf-typegen": "wrangler types --env-interface CloudflareBindings",
+		"format": "prettier --check --ignore-path .prettierignore .",
+		"format:fix": "prettier --write --ignore-path .prettierignore .",
+		"db:generate": "dotenv -e .dev.vars -- drizzle-kit generate",
+		"db:migrate": "dotenv -e .dev.vars -- tsx src/db/migrate.ts",
+		"db:push": "dotenv -e .dev.vars -- drizzle-kit push",
+		"lint": "biome lint .",
+		"ts": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@auth/core": "^0.40.0",
+		"@auth/drizzle-adapter": "^1.10.0",
+		"@hono/auth-js": "^1.1.0",
+		"@hono/zod-openapi": "^1.1.0",
+		"@hono/zod-validator": "^0.7.2",
+		"@neondatabase/serverless": "^1.0.1",
+		"drizzle-orm": "^0.44.4",
+		"drizzle-zod": "^0.7.0",
+		"hono": "^4.9.0",
+		"zod": "^4.0.17"
+	},
+	"devDependencies": {
+		"@hono/swagger-ui": "^0.5.2",
+		"drizzle-kit": "^0.18.1",
+		"tsx": "^4.20.3",
+		"typescript": "^5.9.2",
+		"wrangler": "^4.4.0"
+	}
+}
